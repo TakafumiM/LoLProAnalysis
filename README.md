@@ -70,4 +70,38 @@ Since the dragon pit is more accessible from the red side than the blue, it has 
   If I had to choose columns which are possibly NMAR, it would be the ban columns: 'ban1','ban2','ban3','ban4','ban5'. While many missing rows from this columns is related to Chinese leagues, there are also many other leagues missing this row. The reason might be related to the ban system of League of Legends. While the players are forced to pick a champion during the pick phase, players have the freedom to whether ban a champion or not. There are many reasons not to ban a champion during the ban phase. They might not want to reveal their pick/ban strategies in a throwaway match, or they might run out of time thinking too much.
 
 ### Missingness Dependency
-  
+  There are many missing values in the 'golddiffat15' columns. Here, I will test its dependency on other columns. I will perform permutation test over the 'league' column and the 'result' column. The test statistic is Total Variance Distance for both permutation tests and the significance level is 5%.
+
+#### 'league' column
+Null Hypothesis: 
+Distribution of 'league' when 'golddiffat15' is missing is the same as the distribution of 'league' when 'golddiffat15' is not missing.
+
+Alternate Hypothesis: 
+Distribution of 'league' when 'golddiffat15' is missing is the same as the distribution of 'league' when 'golddiffat15' is not missing.
+
+Here is the histogram of the test results.
+<iframe
+  src="assets/mar1.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+The p-values was 0.026. Therefore, I reject the null hypothesis with the 5% significance level.
+
+#### 'result' column
+Null Hypothesis: 
+Distribution of 'result' when 'golddiffat15' is missing is the same as the distribution of 'result' when 'golddiffat15' is not missing.
+
+Alternate Hypothesis: 
+Distribution of 'result' when 'golddiffat15' is missing is the same as the distribution of 'result' when 'golddiffat15' is not missing.
+
+Here is the histogram of the test results.
+<iframe
+  src="assets/mar2.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+The p-values was 1. Therefore, I failed to reject the null hypothesis with the 5% significance level.
