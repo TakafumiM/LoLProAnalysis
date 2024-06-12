@@ -130,22 +130,30 @@ For model evaluation, I am going to use accuracy over f1-score becaue the output
 
 ## Baseline Model
 My baseline model used Decision Tree Classifier with two features: a nominal feature 'side' and a continuous feature 'golddiffat15'. My baseline model is simple. Since 'side' is a categorical column with string imputs, I used OneHotEncoder to 'side' and trained the model.
-The accuracy was 0.7346 which is about 73.5%. I will say that this is a good result considering I have access to only a few information that observers can get before 15 minutes. However, let's see if I can make this model better.
+The accuracy was 0.72504 which is about 72.5%. I will say that this is a good result considering I have access to only a few information that observers can get before 15 minutes. However, let's see if I can make this model better.
 
 ## Final Model
-In my final model, I added multiple features.
-#### Added Variables:
+In my final model, I added multiple features and a transformer. Also, improved the classifier.
 
-#### 'firsttower'
+### Added Variables:
+
+#### 'firsttower' (ordinal)
 'firsttower' is an important factor to know if a team is utilizing
 their gold advantage and expanding them. If a winning team take it, they can snowball the game. On the other hand, if a losing team take it, they can find chance to extend the game and get more scaling.
 
-#### 'firstdragon'
+#### 'firstdragon' (ordinal)
 'firstdragon' is added because the dragon is usually traded with
 objects/kills, but dragon itself doesn't have much impact in gold difference
 while it has impact on champion stats.
 
-#### 'firstblood'
+
+'firstblood' was considered but not added because it can be reflected into the gold lead compared to 'firstdragon'.
+
+Instead, 'xpdiffat15' is added.
+
+#### 'xpdiffat15' (continuous)
+'xpdiffat15' is added because it is also a factor that does not get reflected into the gold lead, but have massive effect on champion stats
+
 
 Considered adding 'firstbaron', but didn't because the baron spawn time is 
 fixed in 20 min of the game. I wanted to stay with the variables that could 
@@ -155,4 +163,23 @@ possibly be measured before 15 min in the game.
 finish the game defending their advantage, but not able to get this information
 at 15 min. I considered using Binarizer to this feature, but there are too many values over 15 minutes that could be noise as shown in the bivariate analysis. Therefore, I decided not to use it.
 
+### Added Transformer:
+While OneHotEncoder still encodes all of the categorical features, StandardScaler is added to encodes the two continuous features. 
+
+#### StandardScaler
+Without any transformers, it is not clear that how good the gold lead or experience lead. Therefore, StandardScaler is added to decide how good the lead is compared to other matches.
+
+#### DecisionTreeClassifier
+
 ## Fairness Analysis
+
+#### Null Hypothesis: 
+My model is fair. Its precision for Blue side and Red side are roughly the same, and any differences are due to random chance.
+
+#### Alternative Hypothesis:
+My model is unfair. Its precision for Blue side and Red side are not the same.
+
+#### Test Statisitcs:
+Difference between the observed precision and the precision of the permutation test.
+
+p-value is 0.279. I failed to reject the null hypothesis at the significance level of 5%. Accordingly, my model seems to be not biased towards either side, but a fair model.
