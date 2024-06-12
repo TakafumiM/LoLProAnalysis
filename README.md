@@ -77,31 +77,42 @@ Null Hypothesis:
 Distribution of 'league' when 'golddiffat15' is missing is the same as the distribution of 'league' when 'golddiffat15' is not missing.
 
 Alternate Hypothesis: 
-Distribution of 'league' when 'golddiffat15' is missing is the same as the distribution of 'league' when 'golddiffat15' is not missing.
+Distribution of 'league' when 'golddiffat15' is missing is not the same as the distribution of 'league' when 'golddiffat15' is not missing.
 
 Here is the histogram of the test results.
 <iframe
   src="assets/mar1.html"
   width="800"
-  height="600"
+  height="400"
   frameborder="0"
 ></iframe>
-
 The p-values was 0.026. Therefore, I reject the null hypothesis with the 5% significance level.
+
+Conclusion: Distribution of 'league' when 'golddiffat15' is missing is not the same as the distribution of 'league' when 'golddiffat15' is not missing.
 
 #### 'result' column
 Null Hypothesis: 
 Distribution of 'result' when 'golddiffat15' is missing is the same as the distribution of 'result' when 'golddiffat15' is not missing.
 
 Alternate Hypothesis: 
-Distribution of 'result' when 'golddiffat15' is missing is the same as the distribution of 'result' when 'golddiffat15' is not missing.
+Distribution of 'result' when 'golddiffat15' is missing is not the same as the distribution of 'result' when 'golddiffat15' is not missing.
 
 Here is the histogram of the test results.
 <iframe
   src="assets/mar2.html"
   width="800"
-  height="600"
+  height="400"
   frameborder="0"
 ></iframe>
-
 The p-values was 1. Therefore, I failed to reject the null hypothesis with the 5% significance level.
+
+## Hypothesis Testing
+
+
+## Framing a Prediction Problem
+
+## Baseline Model
+
+## Final Model
+
+## Fairness Analysis
