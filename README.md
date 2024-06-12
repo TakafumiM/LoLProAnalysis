@@ -25,13 +25,14 @@ Author: Takafumi Matsui
   Next, I transformed the outcome of the ordinal columns, 'result','position', and 'firsttower' into boolean values. Also, I created two new columns named 'game time(m)' and 'is_team'.  'game time(m)' column convert the output of 'gamelength' column into minutes. 'is_team' column returns True if the column is about team and False if not.
   Finally, I took the rows which 'is_team' is True, to pivot the DataFrame into data about teams only and dropped all rows with null input.
 Here is the first five rows of the DataFrame:
-| league   | result   | side   | firsttower   | firstdragon   |   golddiffat15 |   game time(m) | is_team   |   xpdiffat15 |
-|:---------|:---------|:-------|:-------------|:--------------|---------------:|---------------:|:----------|-------------:|
-| LCKC     | False    | Blue   | True         | False         |            107 |        17.2167 | True      |        -1617 |
-| LCKC     | True     | Red    | False        | True          |           -107 |        17.2167 | True      |         1617 |
-| LCKC     | False    | Blue   | False        | False         |          -1763 |        21.2333 | True      |         -906 |
-| LCKC     | True     | Red    | True         | True          |           1763 |        21.2333 | True      |          906 |
-| LCKC     | True     | Blue   | True         | True          |           1191 |        20.2    | True      |         2298 |
+
+| is_team   | league   | result   | side   |   game time(m) | firsttower   | firstdragon   |   golddiffat15 |   xpdiffat15 |
+|:----------|:---------|:---------|:-------|---------------:|:-------------|:--------------|---------------:|-------------:|
+| True      | LCKC     | False    | Blue   |        17.2167 | True         | False         |            107 |        -1617 |
+| True      | LCKC     | True     | Red    |        17.2167 | False        | True          |           -107 |         1617 |
+| True      | LCKC     | False    | Blue   |        21.2333 | False        | False         |          -1763 |         -906 |
+| True      | LCKC     | True     | Red    |        21.2333 | True         | True          |           1763 |          906 |
+| True      | LCKC     | True     | Blue   |        20.2    | True         | True          |           1191 |         2298 |
 
 ### Univariate Analysis
 Here is the histogram I permformed univariate analysis on the gold difference by the winning teams at 15 minutes in the game:
@@ -56,7 +57,8 @@ Here is the scatter plot I performed bivariate analysis on gold difference at 15
 The scatter plot shows that teams with gold lead more than 10k are likely they have already closed the game at 15 minutes. However, the other parts do not have a clear trend. 
 
 ### Interesting Aggregates
-Here are some interesting aggregates from the data set.
+Here are some interesting aggregates from the data set:
+
 | side   |   firstdragon |   firsttower |   result |
 |:-------|--------------:|-------------:|---------:|
 | Blue   |      0.406247 |     0.541946 | 0.522695 |
