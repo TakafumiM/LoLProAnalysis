@@ -143,9 +143,9 @@ Here is the histogram of the emprirical distribution of the test TVD.
   height="400"
   frameborder="0"
 ></iframe>
-The p-values was 0.026. Therefore, I reject the null hypothesis with the 5% significance level.
+The p-values was 0.037. Therefore, I reject the null hypothesis with the 5% significance level.
 
-Conclusion: There was not enough evidence to show that distribution of 'league' when 'golddiffat15' is missing is not the same as the distribution of 'league' when 'golddiffat15' is not missing.
+Conclusion: The distribution of 'league' when 'golddiffat15' is missing is not the same as the distribution of 'league' when 'golddiffat15' is not missing.
 
 #### 'result' column
 #### Null Hypothesis: 
@@ -168,7 +168,7 @@ Here is the histogram of the emprirical distribution of the test TVD.
   height="400"
   frameborder="0"
 ></iframe>
-The p-values was 1. Therefore, I failed to reject the null hypothesis with the 5% significance level.
+The p-values was 0.97. Therefore, I failed to reject the null hypothesis with the 5% significance level. There is not sufficient evidence to prove that the distribution of 'result' when 'golddiffat15' is missing is not the same as the distribution of 'result' when 'golddiffat15' is not missing.
 
 ## Hypothesis Testing
 Here, I seek to find the answer of my center question; whether the team winning in golds at 15 minutes is likely to win or not. As it was shown in Interesting Aggregates, the blue side winrate is 52%. Here is my hypothesis.
@@ -184,7 +184,7 @@ Difference between the mean and 0.52.
 
 #### Significance Level is 5%
 
-The p-value was 0.262, which lead me to fail rejecting the null hypothesis. I couldn't find a clear relation between win rate and the gold lead at 15 minutes.
+The p-value was 0.27, which lead me to fail rejecting the null hypothesis. I couldn't find an evidence that the probability that the blue side team who are winning in golds at 15 minutes is more than or equal to 52%.
 
 ## Framing a Prediction Problem
 I could not find a strong evidence during the analysis that the gold lead at 15 minutes can predict the winning team. This raise a prediction problem:
@@ -194,7 +194,7 @@ For model evaluation, I am going to use accuracy over f1-score becaue the output
 
 ## Baseline Model
 My baseline model used Decision Tree Classifier two features: a nominal feature 'side' and a continuous feature 'golddiffat15'. My baseline model is simple. Since 'side' is a categorical column with string imputs, I used OneHotEncoder to 'side' and trained the model.
-The accuracy was 0.7342 which is about 73.4%. I will say that this is a good result considering I have access to only a few information that observers can get before 15 minutes. However, let's see if I can make this model better.
+The accuracy was 0.0.6533 which is about 65.3%. It is not a good result even considering that I have access to a few information that observers can get before 15 minutes. Let's see if I can make this model better.
 
 ## Final Model
 In my final model, I added multiple features and a transformer.
@@ -226,10 +226,14 @@ While OneHotEncoder still encodes all of the categorical features, StandardScale
 #### StandardScaler
 Without any transformers, it is not clear that how good the gold lead or experience lead is. Therefore, StandardScaler is added to decide how good the lead is compared to other matches.
 
-The accuracy of the new model was 0.7427. The accuracy did improve, but not significantly.
+The accuracy of the new model was 0.6627. The accuracy did improve, but not significantly.
 
 ### Best Hyperparameters
-To further improve the model, here I will find the best hyperparameter to tune the model. The hyperparameters I test on is max_depth and criterion. 
+To further improve the model, here I will find the best hyperparameter to tune the model. The hyperparameters I test on is max_depth and max_features. For max_depth, I tesed over 2 through 9, and for max_features, I tesed for 1 through 5, 'sqrt', 'log2', and None.
+
+As a result, the best hyperparameter was max_depth = 6 and max_features = None.
+
+By using these hyperparameters, the final model's accuracy was 0.7459, which is about 74.5%. Considering that the model can get this accuracy with only the data before 15 minutes, I will say that this model is a good model.
 
 
 
@@ -249,4 +253,4 @@ My model is unfair. Its precision for Blue side and Red side are not the same.
 #### Test Statisitcs:
 Difference between the observed precision and the precision of the permutation test.
 
-p-value is 0.194. I failed to reject the null hypothesis at the significance level of 5%. Accordingly, there is not enough evidence that my model is biased towards either side.
+p-value is 0.388. I failed to reject the null hypothesis at the significance level of 5%. Accordingly, there is not enough evidence that my model is biased towards either side.
