@@ -9,7 +9,7 @@ Author: Takafumi Matsui
   The center question in this analysis is 'How likely the team with more gold at 15 minuets will win the game?' Every objects in this game will produce gold. Therefore, gold lead shows how well a team is performing compared to their opponents. 
 
 ### Columns description
-  In the data set, there are 148992 rows × 131 columns. While I will use most of the rows, there are seven columns I will focus on. Here is the descriptions of those columns:
+  In the data set, there are 148992 rows × 131 columns. While I will use most of the rows, there are eight columns I will focus on. Here is the descriptions of those columns:
 - 'league': This column shows in which league the game happened. There are 49 unique leagues in the data.
 - 'gamelength': This column shows the length of the game in a format of mmss, where m is minutes and s is seconds.
 - 'result': This column shows the result of a match. 1 indicates win and 0 indicates lose.
@@ -17,6 +17,7 @@ Author: Takafumi Matsui
 - 'position': This column show the position of a player or displays 'team' to indicate that the column is about the entire team. 
 - 'firsttower': This column shows whether a team of the row took down the first tower of the game. 1 indicates that they took the tower, 0 indicates that they didn't.
 - 'golddiffat15': This column shows the gold difference at 15 minutes.
+- 'xpdiffat15': This column shows the experience difference at 15 minutes.
 
 ## Data Cleaning and Exploratory Data Analysis
 ### Data Cleaning
@@ -24,13 +25,13 @@ Author: Takafumi Matsui
   Next, I transformed the outcome of the ordinal columns, 'result','position', and 'firsttower' into boolean values. Also, I created two new columns named 'game time(m)' and 'is_team'.  'game time(m)' column convert the output of 'gamelength' column into minutes. 'is_team' column returns True if the column is about team and False if not.
   Finally, I took the rows which 'is_team' is True, to pivot the DataFrame into data about teams only and dropped all rows with null input.
 Here is the first five rows of the DataFrame:
-|league|result|side|firsttower|firstdragon|golddiffat15|game time(m)|is_team|
-|:-----|:-----|:---|:---------|:----------|-----------:|-----------:|:------|
-LCKC   | False|Blue|	    True|	     False|	      107.0|	      1033|	True|
-LCKC   |	True|	Red|	   False|	      True|	     -107.0|	      1033|	True|
-LCKC   | False|Blue|	   False|	     False|	    -1763.0|	      1274|	True|
-LCKC   |	True|	Red|	    True|	      True|	     1763.0|	      1274|	True|
-LCKC   |	True|Blue|	    True|	      True|	     1191.0|	      1212|	True|
+| league   | result   | side   | firsttower   | firstdragon   |   golddiffat15 |   game time(m) | is_team   |   xpdiffat15 |
+|:---------|:---------|:-------|:-------------|:--------------|---------------:|---------------:|:----------|-------------:|
+| LCKC     | False    | Blue   | True         | False         |            107 |        17.2167 | True      |        -1617 |
+| LCKC     | True     | Red    | False        | True          |           -107 |        17.2167 | True      |         1617 |
+| LCKC     | False    | Blue   | False        | False         |          -1763 |        21.2333 | True      |         -906 |
+| LCKC     | True     | Red    | True         | True          |           1763 |        21.2333 | True      |          906 |
+| LCKC     | True     | Blue   | True         | True          |           1191 |        20.2    | True      |         2298 |
 
 ### Univariate Analysis
 Here is the histogram I permformed univariate analysis on the gold difference by the winning teams at 15 minutes in the game:
@@ -56,10 +57,10 @@ The scatter plot shows that teams with gold lead more than 10k are likely they h
 
 ### Interesting Aggregates
 Here are some interesting aggregates from the data set.
-|side|firstdragon|firsttower|result|
-|:---|----------:|---------:|-----:|
-|Blue|       0.41|   	  0.54|	 0.52|
-|Red |       0.59|	    0.46|	 0.48|
+| side   |   firstdragon |   firsttower |   result |
+|:-------|--------------:|-------------:|---------:|
+| Blue   |      0.406247 |     0.541946 | 0.522695 |
+| Red    |      0.593564 |     0.458054 | 0.477116 |
 
 There are some side bias in each column. 
 Since the dragon pit is more accessible from the red side than the blue, it has been said that it is easier to red team to capture the dradon. That tendency is shown in the table as well. On the other hand, first tower and the game is a little biased towards the blue side. The reason is not clear here. The advantage in the champion draft might be the cause, or the red side jungle being open might be the problem. Regardless of the cause, blue side team are a little likely to win the game.
@@ -79,7 +80,61 @@ Distribution of 'league' when 'golddiffat15' is missing is the same as the distr
 #### Alternate Hypothesis: 
 Distribution of 'league' when 'golddiffat15' is missing is not the same as the distribution of 'league' when 'golddiffat15' is not missing.
 
-Here is the histogram of the test results.
+Here is the obseved distribution of 'league' when 'golddiffat15' is missing and not missing.
+
+| league     |   gdf_missing = False |   gdf_missing = True |
+|:-----------|----------------------:|---------------------:|
+| CBLOL      |            0.022931   |           0          |
+| CBLOLA     |            0.0203831  |           0          |
+| CDF        |            0.00688874 |           0          |
+| CT         |            0.00245352 |           0          |
+| DCup       |            0          |           0.042331   |
+| DDH        |            0.0197226  |           0          |
+| EBL        |            0.0174578  |           0          |
+| EL         |            0.0127395  |           0          |
+| ESLOL      |            0.0228367  |           0          |
+| EUM        |            0.0251958  |           0          |
+| GL         |            0.0164197  |           0          |
+| GLL        |            0.0191564  |           0          |
+| HC         |            0.0152873  |           0          |
+| HM         |            0.014438   |           0          |
+| IC         |            0.00707747 |           0          |
+| LAS        |            0.0214212  |           0          |
+| LCK        |            0.0440691  |           0          |
+| LCKC       |            0.0371803  |           0          |
+| LCL        |            0.00150986 |           0          |
+| LCO        |            0.0200057  |           0          |
+| LCS        |            0.0288761  |           0          |
+| LCSA       |            0.0509578  |           0          |
+| LDL        |            0          |           0.517867   |
+| LEC        |            0.022931   |           0          |
+| LFL        |            0.0233085  |           0          |
+| LFL2       |            0.0227423  |           0          |
+| LHE        |            0.022931   |           0          |
+| LJL        |            0.0201944  |           0          |
+| LJLA       |            0.00358592 |           0          |
+| LLA        |            0.0176465  |           0          |
+| LMF        |            0.0301029  |           0          |
+| LPL        |            0          |           0.432106   |
+| LPLOL      |            0.0197226  |           0          |
+| LVP SL     |            0.0231198  |           0          |
+| MSI        |            0.00754931 |           0          |
+| NEXO       |            0.0182127  |           0          |
+| NLC        |            0.0361423  |           0          |
+| PCS        |            0.0255733  |           0          |
+| PGC        |            0.0530339  |           0          |
+| PGN        |            0.0140606  |           0          |
+| PRM        |            0.0346324  |           0          |
+| SL (LATAM) |            0.0155704  |           0          |
+| TAL        |            0.0193451  |           0          |
+| TCL        |            0.020855   |           0          |
+| UL         |            0.0230254  |           0          |
+| UPL        |            0.0388789  |           0          |
+| VCS        |            0.0304803  |           0          |
+| VL         |            0.0160423  |           0          |
+| WLDs       |            0.0133057  |           0.00769654 |
+
+Here is the histogram of the emprirical distribution of the test TVD.
 <iframe
   src="assets/mar1.html"
   width="800"
@@ -88,7 +143,7 @@ Here is the histogram of the test results.
 ></iframe>
 The p-values was 0.026. Therefore, I reject the null hypothesis with the 5% significance level.
 
-Conclusion: Distribution of 'league' when 'golddiffat15' is missing is not the same as the distribution of 'league' when 'golddiffat15' is not missing.
+Conclusion: There was not enough evidence to show that distribution of 'league' when 'golddiffat15' is missing is not the same as the distribution of 'league' when 'golddiffat15' is not missing.
 
 #### 'result' column
 #### Null Hypothesis: 
@@ -97,7 +152,14 @@ Distribution of 'result' when 'golddiffat15' is missing is the same as the distr
 #### Alternate Hypothesis: 
 Distribution of 'result' when 'golddiffat15' is missing is not the same as the distribution of 'result' when 'golddiffat15' is not missing.
 
-Here is the histogram of the test results.
+Distribution of 'result' when 'golddiffat15' is missing is not the same as the distribution of 'result' when 'golddiffat15' is not missing.
+
+| result   |   gdf_missing = False |   gdf_missing = True |
+|:---------|----------------------:|---------------------:|
+| False    |              0.500094 |                  0.5 |
+| True     |              0.499906 |                  0.5 |
+
+Here is the histogram of the emprirical distribution of the test TVD.
 <iframe
   src="assets/mar2.html"
   width="800"
@@ -129,11 +191,11 @@ This is a binary classification, which I seek to predict if the result is True(w
 For model evaluation, I am going to use accuracy over f1-score becaue the output are expected to be fairly balanced, and getting False Negative or False Positive is not a fatal problem for this analysis.
 
 ## Baseline Model
-My baseline model used Decision Tree Classifier with two features: a nominal feature 'side' and a continuous feature 'golddiffat15'. My baseline model is simple. Since 'side' is a categorical column with string imputs, I used OneHotEncoder to 'side' and trained the model.
-The accuracy was 0.72504 which is about 72.5%. I will say that this is a good result considering I have access to only a few information that observers can get before 15 minutes. However, let's see if I can make this model better.
+My baseline model used Decision Tree Classifier two features: a nominal feature 'side' and a continuous feature 'golddiffat15'. My baseline model is simple. Since 'side' is a categorical column with string imputs, I used OneHotEncoder to 'side' and trained the model.
+The accuracy was 0.7342 which is about 73.4%. I will say that this is a good result considering I have access to only a few information that observers can get before 15 minutes. However, let's see if I can make this model better.
 
 ## Final Model
-In my final model, I added multiple features and a transformer. Also, improved the classifier.
+In my final model, I added multiple features and a transformer.
 
 ### Added Variables:
 
@@ -142,10 +204,7 @@ In my final model, I added multiple features and a transformer. Also, improved t
 their gold advantage and expanding them. If a winning team take it, they can snowball the game. On the other hand, if a losing team take it, they can find chance to extend the game and get more scaling.
 
 #### 'firstdragon' (ordinal)
-'firstdragon' is added because the dragon is usually traded with
-objects/kills, but dragon itself doesn't have much impact in gold difference
-while it has impact on champion stats.
-
+'firstdragon' is added because the dragon is usually traded with objects/kills, but dragon itself doesn't have much impact in gold difference while it has impact on champion stats.
 
 'firstblood' was considered but not added because it can be reflected into the gold lead compared to 'firstdragon'.
 
@@ -155,23 +214,29 @@ Instead, 'xpdiffat15' is added.
 'xpdiffat15' is added because it is also a factor that does not get reflected into the gold lead, but have massive effect on champion stats
 
 
-Considered adding 'firstbaron', but didn't because the baron spawn time is 
-fixed in 20 min of the game. I wanted to stay with the variables that could 
-possibly be measured before 15 min in the game.
+Considered adding 'firstbaron', which is a feature which indicates if I team took the first baron or not, but didn't because the baron spawn time is fixed in 20 min of the game. I wanted to stay with the variables that could possibly be measured before 15 min in the game.
 
-'game time(m)' is also important to determine if the winning team was able to
-finish the game defending their advantage, but not able to get this information
-at 15 min. I considered using Binarizer to this feature, but there are too many values over 15 minutes that could be noise as shown in the bivariate analysis. Therefore, I decided not to use it.
+'game time(m)' is also important to determine if the winning team was able to finish the game defending their advantage, but this information is not available at 15 min. I considered using Binarizer to this feature, but there are too many values over 15 minutes that could be noise as shown in the bivariate analysis. Therefore, I decided not to use it.
 
 ### Added Transformer:
 While OneHotEncoder still encodes all of the categorical features, StandardScaler is added to encodes the two continuous features. 
 
 #### StandardScaler
-Without any transformers, it is not clear that how good the gold lead or experience lead. Therefore, StandardScaler is added to decide how good the lead is compared to other matches.
+Without any transformers, it is not clear that how good the gold lead or experience lead is. Therefore, StandardScaler is added to decide how good the lead is compared to other matches.
 
-#### DecisionTreeClassifier
+The accuracy of the new model was 0.7427. The accuracy did improve, but not significantly.
+
+### Best Hyperparameters
+To further improve the model, here I will find the best hyperparameter to tune the model. The hyperparameters I test on is max_depth and criterion. 
+
+
+
 
 ## Fairness Analysis
+Finally, I am going to check if my model is fair among the sides. In other words,
+#### Is my model biased towards either blue or red side?
+
+Here, I chose blue side as group X and red side as group Y. 
 
 #### Null Hypothesis: 
 My model is fair. Its precision for Blue side and Red side are roughly the same, and any differences are due to random chance.
@@ -182,4 +247,4 @@ My model is unfair. Its precision for Blue side and Red side are not the same.
 #### Test Statisitcs:
 Difference between the observed precision and the precision of the permutation test.
 
-p-value is 0.279. I failed to reject the null hypothesis at the significance level of 5%. Accordingly, my model seems to be not biased towards either side, but a fair model.
+p-value is 0.194. I failed to reject the null hypothesis at the significance level of 5%. Accordingly, there is not enough evidence that my model is biased towards either side.
