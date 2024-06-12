@@ -73,10 +73,10 @@ Since the dragon pit is more accessible from the red side than the blue, it has 
   There are many missing values in the 'golddiffat15' columns. Here, I will test its dependency on other columns. I will perform permutation test over the 'league' column and the 'result' column. The test statistic is Total Variance Distance for both permutation tests and the significance level is 5%.
 
 #### 'league' column
-Null Hypothesis: 
+#### Null Hypothesis: 
 Distribution of 'league' when 'golddiffat15' is missing is the same as the distribution of 'league' when 'golddiffat15' is not missing.
 
-Alternate Hypothesis: 
+#### Alternate Hypothesis: 
 Distribution of 'league' when 'golddiffat15' is missing is not the same as the distribution of 'league' when 'golddiffat15' is not missing.
 
 Here is the histogram of the test results.
@@ -91,10 +91,10 @@ The p-values was 0.026. Therefore, I reject the null hypothesis with the 5% sign
 Conclusion: Distribution of 'league' when 'golddiffat15' is missing is not the same as the distribution of 'league' when 'golddiffat15' is not missing.
 
 #### 'result' column
-Null Hypothesis: 
+#### Null Hypothesis: 
 Distribution of 'result' when 'golddiffat15' is missing is the same as the distribution of 'result' when 'golddiffat15' is not missing.
 
-Alternate Hypothesis: 
+#### Alternate Hypothesis: 
 Distribution of 'result' when 'golddiffat15' is missing is not the same as the distribution of 'result' when 'golddiffat15' is not missing.
 
 Here is the histogram of the test results.
@@ -107,12 +107,52 @@ Here is the histogram of the test results.
 The p-values was 1. Therefore, I failed to reject the null hypothesis with the 5% significance level.
 
 ## Hypothesis Testing
+Here, I seek to find the answer of my center question; whether the team winning in golds at 15 minutes is likely to win or not. As it was shown in Interesting Aggregates, the blue side winrate is 52%. Here is my hypothesis.
 
+#### Null Hypothesis: 
+The probability that the blue side team who are winning in golds at 15 minutes is less than 52% 
+
+#### Alternative Hypothesis: 
+The probability that the blue side team who are winning in golds at 15 minutes is more than or equal to 52% 
+
+#### Test Statistics:
+Difference between the mean and 0.52.
+
+#### Significance Level is 5%
+
+The p-value was 0.262, which lead me to fail rejecting the null hypothesis. I couldn't find a clear relation between win rate and the gold lead at 15 minutes.
 
 ## Framing a Prediction Problem
+I could not find a strong evidence during the analysis that the gold lead at 15 minutes can predict the winning team. This raise a prediction problem:
+#### Is it possible to predict the game result with the information before 15 minutes?
+This is a binary classification, which I seek to predict if the result is True(win) or False(lose). To find if the team win or not, there is any other better variable to predict than the result.
+For model evaluation, I am going to use accuracy over f1-score becaue the output are expected to be fairly balanced, and getting False Negative or False Positive is not a fatal problem for this analysis.
 
 ## Baseline Model
+My baseline model used Decision Tree Classifier with two features: a nominal feature 'side' and a continuous feature 'golddiffat15'. My baseline model is simple. Since 'side' is a categorical column with string imputs, I used OneHotEncoder to 'side' and trained the model.
+The accuracy was 0.7346 which is about 73.5%. I will say that this is a good result considering I have access to only a few information that observers can get before 15 minutes. However, let's see if I can make this model better.
 
 ## Final Model
+In my final model, I added multiple features.
+#### Added Variables:
+
+#### 'firsttower'
+'firsttower' is an important factor to know if a team is utilizing
+their gold advantage and expanding them. If a winning team take it, they can snowball the game. On the other hand, if a losing team take it, they can find chance to extend the game and get more scaling.
+
+#### 'firstdragon'
+'firstdragon' is added because the dragon is usually traded with
+objects/kills, but dragon itself doesn't have much impact in gold difference
+while it has impact on champion stats.
+
+#### 'firstblood'
+
+Considered adding 'firstbaron', but didn't because the baron spawn time is 
+fixed in 20 min of the game. I wanted to stay with the variables that could 
+possibly be measured before 15 min in the game.
+
+'game time(m)' is also important to determine if the winning team was able to
+finish the game defending their advantage, but not able to get this information
+at 15 min. I considered using Binarizer to this feature, but there are too many values over 15 minutes that could be noise as shown in the bivariate analysis. Therefore, I decided not to use it.
 
 ## Fairness Analysis
