@@ -189,7 +189,7 @@ The p-value was 0.262, which lead me to fail rejecting the null hypothesis. I co
 ## Framing a Prediction Problem
 I could not find a strong evidence during the analysis that the gold lead at 15 minutes can predict the winning team. This raise a prediction problem:
 #### Is it possible to predict the game result with the information before 15 minutes?
-This is a binary classification, which I seek to predict if the result is True(win) or False(lose). To find if the team win or not, there is any other better variable to predict than the result.
+This is a binary classification, which the response variable is True (win) or False (lose). To find if the team win or not, there is any other better variable to predict than the result.
 For model evaluation, I am going to use accuracy over f1-score becaue the output are expected to be fairly balanced, and getting False Negative or False Positive is not a fatal problem for this analysis.
 
 ## Baseline Model
