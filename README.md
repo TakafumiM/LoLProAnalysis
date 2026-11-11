@@ -1,10 +1,19 @@
 # Data Analysis of Professional League of Legends Scene
+
+> A student data science project analyzing the 2022 professional League of Legends season, with a focus on missingness, hypothesis testing, and predicting match outcomes using information available around the 15-minute mark.
+
+**Methods:** exploratory analysis · missing-data assessment · permutation testing · decision-tree classification · subgroup fairness checks
+
+**Project status:** completed coursework (2024). The original analysis and reported results are retained below.
+
+---
+
 Author: Takafumi Matsui
 ## Introduction
 ### Overview of this analysis
-  League of Legends is a multiplayer online battle arena, often called MOBA. It is a world wide popular esports game with multiple professional league around the world. In this anallysis, I seek to analyze data and make a prediction model which will predict the result of a professional League of Legends game. The data set I worked on is a professional data set from 2022 season, which was developed by Oracle’s Elixir.
+  League of Legends is a multiplayer online battle arena, often called MOBA. It is a world wide popular esports game with multiple professional league around the world. In this analysis, I seek to analyze data and make a prediction model which will predict the result of a professional League of Legends game. The data set I worked on is a professional data set from 2022 season, which was developed by Oracle’s Elixir.
 
-  In League of Legends, the lead at 15 minutes is one of an important indicator of which team is doing better than others. During the games, players can start vote to surrender the game after 15 minutes, which indicates that officially, the lead at 15 minuites can be a game deciding factor.
+  In League of Legends, the lead at 15 minutes is one of an important indicator of which team is doing better than others. During the games, players can start vote to surrender the game after 15 minutes, which indicates that officially, the lead at 15 minutes can be a game deciding factor.
 
   The center question in this analysis is 'How likely the team with more gold at 15 minuets will win the game?' Every objects in this game will produce gold. Therefore, gold lead shows how well a team is performing compared to their opponents. 
 
@@ -190,11 +199,11 @@ The p-value was 0.27, which lead me to fail rejecting the null hypothesis. I cou
 I could not find a strong evidence during the analysis that the gold lead at 15 minutes can predict the winning team. This raise a prediction problem:
 #### Is it possible to predict the game result with the information before 15 minutes?
 This is a binary classification, which the response variable is True (win) or False (lose). To find if the team win or not, there is any other better variable to predict than the result.
-For model evaluation, I am going to use accuracy over f1-score becaue the output are expected to be fairly balanced, and getting False Negative or False Positive is not a fatal problem for this analysis.
+For model evaluation, I am going to use accuracy over f1-score because the output are expected to be fairly balanced, and getting False Negative or False Positive is not a fatal problem for this analysis.
 
 ## Baseline Model
 My baseline model used Decision Tree Classifier two features: a nominal feature 'side' and a continuous feature 'golddiffat15'. My baseline model is simple. Since 'side' is a categorical column with string imputs, I used OneHotEncoder to 'side' and trained the model.
-The accuracy was 0.0.6533 which is about 65.3%. It is not a good result even considering that I have access to a few information that observers can get before 15 minutes. Let's see if I can make this model better.
+The accuracy was 0.6533 which is about 65.3%. It is not a good result even considering that I have access to a few information that observers can get before 15 minutes. Let's see if I can make this model better.
 
 ## Final Model
 In my final model, I added multiple features and a transformer.
@@ -250,7 +259,7 @@ My model is fair. Its precision for Blue side and Red side are roughly the same,
 #### Alternative Hypothesis:
 My model is unfair. Its precision for Blue side and Red side are not the same.
 
-#### Test Statisitcs:
+#### Test Statistics:
 Difference between the observed precision and the precision of the permutation test.
 
 p-value is 0.388. I failed to reject the null hypothesis at the significance level of 5%. Accordingly, there is not enough evidence that my model is biased towards either side.
